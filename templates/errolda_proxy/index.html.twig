@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'app.title.errolda.index' | trans }}{% endblock %}
+
+{% block body %}
+	<main class="container-fluid" {{ stimulus_controller('alert') }}> 
+        <div id="modal" class="modal fade" data-bs-backdrop="static" tabindex="-1" data-alert-target="modal">
+            <div class="modal-dialog modal-md modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ 'message.anErrorOcurred' | trans }}</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>{{ msg | trans }}</p>
+                    </div>
+                    <div class="modal-footer d-flex {# justify-content-center#} "> 
+                        <a class="btn btn-primary" href="{{ app.locale == 'es' ? 
+                            'https://e-udala.amorebieta-etxano.eus/info?x=SzdDZYZDvGAjfRVHU8paEHINcpys65LkDz6FIkiVSQ8339ZSbc3gqUNP09wSE7wiqjfOy11V-75tJI95q*qH2JLH7wvS2EaF8DaSHreILy4' : 
+                            'https://e-udala.amorebieta-etxano.eus/info?x=SzdDZYZDvGAjfRVHU8paEHINcpys65LkDz6FIkiVSQ8339ZSbc3gqQonS1iO4Xi6HV2JC1OY5skBqwuhgYRfnEontLHvkTJijmNw0ah2VEA' }}">
+                                {{ 'btn.returnToMainPage' | trans }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</main>
+{% endblock %}

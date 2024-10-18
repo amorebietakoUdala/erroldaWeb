@@ -1,0 +1,16 @@
+#  Titles 
+title.appTitle: "Padrón"
+app.title.errolda.index: "Padrón"
+
+#  Forms
+
+#  Buttons
+btn.returnToMainPage: "Volver a la sede electrónica"
+
+#  Messages
+message.anErrorOcurred: "Se ha producido un error"
+
+#  Error
+'Habitante sin empadronar': 'El habitante no se encuentra empadronado'
+
+# Labels

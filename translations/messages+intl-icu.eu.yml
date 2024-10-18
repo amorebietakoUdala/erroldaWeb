@@ -1,0 +1,16 @@
+#  Titles 
+title.appTitle: "Errolda"
+app.title.errolda.index: "Errolda"
+
+#  Forms
+
+#  Buttons
+btn.returnToMainPage: "Egoitza electronikora itzuli"
+
+#  Messages
+message.anErrorOcurred: "Akats bat suertatu da"
+
+#  Error
+'Habitante sin empadronar': 'No se encuentra empadronado'
+
+# Labels
