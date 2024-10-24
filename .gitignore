@@ -31,3 +31,5 @@ rector.php.bak
 ###> phpstan/phpstan ###
 phpstan.neon
 ###< phpstan/phpstan ###
+
+/resources/

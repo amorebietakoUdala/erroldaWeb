@@ -21,8 +21,10 @@ parameters:
     contactEmail: null
     departmentDefault: '%env(DEPARTMENT_DEFAULT)%'
     contactEmailDefault: '%env(CONTACT_EMAIL_DEFAULT)%'
-
-
+    kernel.root_dir: '%kernel.project_dir%/src'
+    certFile: '%env(CERT_FILE)%'
+    privateKeyFile: '%env(PRIVATE_KEY_FILE)%'
+    privateKeyFilePassword: '%env(PRIVATE_KEY_PASSWORD)%'
 
 services:
     # default configuration for services in *this* file
@@ -35,6 +37,9 @@ services:
             $contactEmail: '%contactEmail%'
             $departmentDefault: '%departmentDefault%'
             $contactEmailDefault: '%contactEmailDefault%'
+            $certFile: '%certFile%'
+            $privateKeyFile: '%privateKeyFile%'
+            $privateKeyFilePassword: '%privateKeyFilePassword%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name

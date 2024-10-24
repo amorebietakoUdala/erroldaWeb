@@ -316,6 +316,9 @@
     "twig/extra-bundle": {
         "version": "v3.8.0"
     },
+    "whiteoctober/tcpdf-bundle": {
+        "version": "1.1.2"
+    },
     "willdurand/js-translation-bundle": {
         "version": "6.0",
         "recipe": {

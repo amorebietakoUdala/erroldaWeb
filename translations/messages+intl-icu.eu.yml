@@ -11,6 +11,6 @@ btn.returnToMainPage: "Egoitza electronikora itzuli"
 message.anErrorOcurred: "Akats bat suertatu da"
 
 #  Error
-'Habitante sin empadronar': 'No se encuentra empadronado'
+'Habitante sin empadronar': 'Eskatutako informazioa ez dago erroldan'
 
 # Labels

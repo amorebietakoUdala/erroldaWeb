@@ -11,6 +11,6 @@ btn.returnToMainPage: "Volver a la sede electrónica"
 message.anErrorOcurred: "Se ha producido un error"
 
 #  Error
-'Habitante sin empadronar': 'El habitante no se encuentra empadronado'
+'Habitante sin empadronar': 'Actualmente su información no se encuentra en el padron'
 
 # Labels

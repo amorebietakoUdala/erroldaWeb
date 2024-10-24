@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Audit;
+use App\Services\PdfSigner;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -19,9 +21,10 @@ class ErroldaProxyController extends AbstractController
         private HttpClientInterface $httpClient, 
         private TranslatorInterface $translator,
         private EntityManagerInterface $em,
+        private PdfSigner $signer,
     ) {}
 
-    public function proxy($query): Response
+    public function proxy(string $dni, array $query): Response
     {
         $response = $this->httpClient->request(Request::METHOD_GET,$this->swalUrl,[
             'query' => $query,
@@ -29,11 +32,11 @@ class ErroldaProxyController extends AbstractController
         $contentType = mb_strtolower($response->getHeaders()['content-type'][0]);
         $content = $response->getContent();
         if ( mb_strpos($contentType, 'application/pdf') !== false ) {
-            return new Response($content,Response::HTTP_OK,[
-                'Content-type' => 'application/pdf', 
-                'Content-Disposition' => "attachment; filename=volante.pdf",
-                'Content-Length' => mb_strlen($content),
-            ]);
+            file_put_contents("/tmp/$dni.pdf", $content);
+            $inputFile = "/tmp/$dni.pdf";
+            $outputFile = "/tmp/$dni-signed.pdf";
+            $this->signer->signPdf($inputFile,$outputFile);
+            return new BinaryFileResponse($outputFile);
         } else if ( mb_strpos($contentType, 'application/json') !== false ) {
             // Ejempo de respuesta erronea: {"dni":"11111111H","msg":"Habitante sin empadronar"}
             $json = json_decode($content, true);
@@ -52,17 +55,13 @@ class ErroldaProxyController extends AbstractController
             return $this->redirectToRoute('app_giltza');
         }
         $giltzaUser = $request->getSession()->get('giltzaUser');
-        $audit = new Audit();
-        $audit->setCreatedAt(new \DateTime());
-        $audit->fill($giltzaUser);
-        $this->em->persist($audit);
-        $this->em->flush();
+        $this->saveAudit($giltzaUser);
         $query = [
             'psTipo' => '3',
             'psDni' => $giltzaUser['dni'],
             'psEfectos' => 'Individual'
         ];
-        return $this->proxy($query);
+        return $this->proxy($giltzaUser['dni'], $query);
     }
 
     #[Route('/{_locale}/historikoa', name: 'app_errolda_historikoa')]
@@ -72,16 +71,20 @@ class ErroldaProxyController extends AbstractController
             return $this->redirectToRoute('app_giltza');
         }
         $giltzaUser = $request->getSession()->get('giltzaUser');
-        $audit = new Audit();
-        $audit->setCreatedAt(new \DateTime());
-        $audit->fill($giltzaUser);
-        $this->em->persist($audit);
-        $this->em->flush();
+        $this->saveAudit($giltzaUser);
         $query = [
             'psTipo' => '9',
             'psDni' => $giltzaUser['dni'],
             'psEfectos' => 'Historico'
         ];
-        return $this->proxy($query);
+        return $this->proxy($giltzaUser['dni'], $query);
+    }
+
+    private function saveAudit($giltzaUser) {
+        $audit = new Audit();
+        $audit->setCreatedAt(new \DateTime());
+        $audit->fill($giltzaUser);
+        $this->em->persist($audit);
+        $this->em->flush();
     }
 }
